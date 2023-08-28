@@ -27,7 +27,7 @@ export default class ApiClient {
         const div = document.createElement('div')
         div.classList.add('album-container')
         const img = document.createElement('img')
-        img.src = this.getAlbumCoverUrl(album.id);
+        img.src = this.getCoverUrl(album.cover_hash);
         div.appendChild(img)
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('album-info');
@@ -44,33 +44,33 @@ export default class ApiClient {
         infoDiv.appendChild(artist)
 
         div.addEventListener('click', () => {
-            this.listTracks(album.id)
+            this.listTracks(album)
         })
 
         return div
     }
 
-    getAlbumCoverUrl(albumid) {
-        return this.#baseUrl + "/api/cover/album/" + albumid;
+    getCoverUrl(id) {
+        return this.#baseUrl + "/api/cover/" + id;
     }
 
-    getTracks(albumid) {
-        return fetch(this.#baseUrl + '/api/songs/' + albumid).then(r => r.json())
+    getTracks(album) {
+        return fetch(this.#baseUrl + '/api/songs/' + album.id).then(r => r.json())
     }
 
-    listTracks(albumid) {
+    listTracks(album) {
         this.#content.innerHTML = '';
         this.#content.scrollTo(0, 0);
-        this.getTracks(albumid).then(v => {
+        this.getTracks(album).then(v => {
 
             const backdrop = document.createElement('div')
             backdrop.classList.add('backdrop')
-            backdrop.style.backgroundImage = `url("${this.getAlbumCoverUrl(albumid)}")`
+            backdrop.style.backgroundImage = `url("${this.getCoverUrl(album.cover_hash)}")`
             this.#content.appendChild(backdrop)
 
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
-            cover.src = this.getAlbumCoverUrl(albumid);
+            cover.src = this.getCoverUrl(album.cover_hash);
             this.#content.append(cover)
 
             const albumInfoDiv = document.createElement('div')
@@ -111,7 +111,7 @@ export default class ApiClient {
         div.classList.add('song-container')
         const cover = document.createElement('img')
         cover.classList.add('song-cover')
-        cover.src = this.#baseUrl + "/api/cover/song/" + song.id;
+        cover.src = this.getCoverUrl(song.cover_hash);
         div.appendChild(cover)
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('song-info');
@@ -137,6 +137,6 @@ export default class ApiClient {
 
     playSong(song) {
         document.getElementById('audio').src = this.#baseUrl + '/api/play/' + song.id;
-        this.#bgCover.style.backgroundImage = `url("${this.#baseUrl + "/api/cover/song/" + song.id}")`
+        this.#bgCover.style.backgroundImage = `url("${this.getCoverUrl(song.cover_hash)}")`
     }
 }
