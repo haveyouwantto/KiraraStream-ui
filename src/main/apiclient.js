@@ -1,10 +1,12 @@
 export default class ApiClient {
     #baseUrl;
     #content;
+    #bgCover;
 
     constructor(baseUrl) {
         this.#baseUrl = baseUrl;
         this.#content = document.getElementById("content")
+        this.#bgCover = document.getElementById('bgCover');
     }
 
     getAlbums() {
@@ -13,6 +15,7 @@ export default class ApiClient {
 
     listAlbums() {
         this.#content.innerHTML = '';
+        this.#content.scrollTo(0, 0);
         this.getAlbums().then(v => {
             for (let album of v) {
                 this.#content.appendChild(this.populateAlbum(album))
@@ -57,13 +60,14 @@ export default class ApiClient {
 
     listTracks(albumid) {
         this.#content.innerHTML = '';
+        this.#content.scrollTo(0, 0);
         this.getTracks(albumid).then(v => {
 
             const backdrop = document.createElement('div')
             backdrop.classList.add('backdrop')
             backdrop.style.backgroundImage = `url("${this.getAlbumCoverUrl(albumid)}")`
             this.#content.appendChild(backdrop)
-            
+
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
             cover.src = this.getAlbumCoverUrl(albumid);
@@ -133,6 +137,6 @@ export default class ApiClient {
 
     playSong(song) {
         document.getElementById('audio').src = this.#baseUrl + '/api/play/' + song.id;
-        document.getElementById('bgCover').style.backgroundImage = `url("${this.#baseUrl + "/api/cover/song/" + song.id}")`
+        this.#bgCover.style.backgroundImage = `url("${this.#baseUrl + "/api/cover/song/" + song.id}")`
     }
 }
