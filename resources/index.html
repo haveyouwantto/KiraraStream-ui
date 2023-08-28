@@ -30,9 +30,10 @@
             filter: blur(1.25rem) brightness(50%);
         }
 
-        #albumList {
+        #content {
             display: flex;
             flex-wrap: wrap;
+            margin-bottom: 60px;
         }
 
         .album-container {
@@ -58,12 +59,20 @@
             transition: filter 100ms;
         }
 
-        .album-container img:hover{
+        .album-container img:hover {
             filter: brightness(0.5);
         }
 
         .album-artist {
             color: rgba(255, 255, 255, 0.5);
+        }
+
+        .album-title,
+        .album-artist {
+            font-size: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-wrap: nowrap;
         }
 
         .backdrop {
@@ -77,16 +86,28 @@
         }
 
         .album-cover {
-            width: 15vw;
-            height: 15vw;
-            margin-left: 6vw;
-            margin-top: 7.5vw;
+            width: 30vh;
+            height: 30vh;
+            left: 3vh;
+            top: 5vh;
             border-radius: 4px;
             object-fit: cover;
+            position: absolute;
+        }
+
+        .album-view-info {
+            position: absolute;
+            left: 36vh;
+            top: 5vh;
+        }
+
+        .album-title-large {
+            font-size: 26px;
         }
 
         .album-content {
             width: 100%;
+            margin-top: 40vh;
         }
 
         .song-container {
@@ -111,15 +132,62 @@
             justify-content: center;
         }
 
+        /* temporary */
         audio {
-            position: absolute;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        @media screen and (max-width: 500px) {
+            .album-cover {
+                width: 20vh;
+                height: 20vh;
+                top: 10vh;
+            }
+
+            .album-view-info {
+                left: 25vh;
+                top: 10vh;
+            }
+
+            .album-title-large {
+                font-size: 20px;
+            }
+        }
+
+        @media screen and (max-width: 300px) {
+            #content {
+                font-size: small;
+            }
+
+            .album-cover {
+                width: 50vw;
+                height: 50vw;
+                top: 2vh;
+                left: 25vw;
+            }
+
+            .album-view-info {
+                left: 12vw;
+                top: 55vw;
+                width: 75vw;
+            }
+
+            .album-view-info div {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: small;
+                text-wrap: nowrap;
+                text-align: center;
+            }
         }
     </style>
 </head>
 
 <body>
     <div id="bgCover"></div>
-    <div id="albumList">
+    <div id="content">
     </div>
     <audio src="" controls id="audio" autoplay></audio>
 </body>

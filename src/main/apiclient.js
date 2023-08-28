@@ -1,10 +1,10 @@
 export default class ApiClient {
     #baseUrl;
-    #albumDiv;
+    #content;
 
     constructor(baseUrl) {
         this.#baseUrl = baseUrl;
-        this.#albumDiv = document.getElementById("albumList")
+        this.#content = document.getElementById("content")
     }
 
     getAlbums() {
@@ -12,10 +12,10 @@ export default class ApiClient {
     }
 
     listAlbums() {
-        this.#albumDiv.innerHTML = '';
+        this.#content.innerHTML = '';
         this.getAlbums().then(v => {
             for (let album of v) {
-                this.#albumDiv.appendChild(this.populateAlbum(album))
+                this.#content.appendChild(this.populateAlbum(album))
             }
         })
     }
@@ -32,7 +32,7 @@ export default class ApiClient {
 
         const title = document.createElement('div')
         title.classList.add('album-title')
-        title.innerText = album.title;
+        title.innerText = album.title ? album.title : "<unknown>";
         infoDiv.appendChild(title)
 
         const artist = document.createElement('div')
@@ -56,22 +56,36 @@ export default class ApiClient {
     }
 
     listTracks(albumid) {
-        this.#albumDiv.innerHTML = '';
+        this.#content.innerHTML = '';
         this.getTracks(albumid).then(v => {
 
             const backdrop = document.createElement('div')
             backdrop.classList.add('backdrop')
             backdrop.style.backgroundImage = `url("${this.getAlbumCoverUrl(albumid)}")`
-            this.#albumDiv.appendChild(backdrop)
-
-            const contentDiv = document.createElement('div');
-            contentDiv.classList.add('album-content')
-
+            this.#content.appendChild(backdrop)
+            
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
             cover.src = this.getAlbumCoverUrl(albumid);
-            contentDiv.appendChild(cover)
-            this.#albumDiv.append(contentDiv)
+            this.#content.append(cover)
+
+            const albumInfoDiv = document.createElement('div')
+            albumInfoDiv.classList.add('album-view-info')
+            this.#content.append(albumInfoDiv)
+
+            const title = document.createElement('div')
+            title.classList.add('album-title-large')
+            title.innerText = v.album_title;
+            albumInfoDiv.append(title)
+
+            const artist = document.createElement('div')
+            // artist.classList.add('album-title-large')
+            artist.innerText = v.album_artist;
+            albumInfoDiv.append(artist)
+
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('album-content')
+            this.#content.append(contentDiv)
 
 
             for (let song of v.songs) {
