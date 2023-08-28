@@ -39,13 +39,12 @@
             display: flex;
             flex-direction: column;
             width: 30vw;
-            min-height: 40vw;
+            min-height: 30vh;
             margin: 4px;
             overflow: hidden;
             cursor: pointer;
             text-align: center;
             max-width: 200px;
-            max-height: 200px;
         }
 
         .album-container img {
@@ -55,6 +54,12 @@
             border-radius: 4px;
             max-width: 200px;
             max-height: 200px;
+            object-fit: cover;
+            transition: filter 100ms;
+        }
+
+        .album-container img:hover{
+            filter: brightness(0.5);
         }
 
         .album-artist {
@@ -77,6 +82,7 @@
             margin-left: 6vw;
             margin-top: 7.5vw;
             border-radius: 4px;
+            object-fit: cover;
         }
 
         .album-content {
@@ -88,16 +94,18 @@
             display: flex;
             cursor: pointer;
             transition: background-color 100ms;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .song-container:hover {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.25);
         }
 
-        .song-track {
+        .song-cover {
             width: 64px;
             height: 64px;
+            border-radius: 4px;
+            margin: 4px;
             display: flex;
             align-items: center;
             justify-content: center;

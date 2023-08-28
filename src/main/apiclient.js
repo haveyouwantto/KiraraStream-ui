@@ -91,17 +91,17 @@ export default class ApiClient {
     populateTrack(song) {
         const div = document.createElement('div')
         div.classList.add('song-container')
-        const track = document.createElement('div')
-        track.classList.add('song-track')
-        track.innerText = song.track;
-        div.appendChild(track)
+        const cover = document.createElement('img')
+        cover.classList.add('song-cover')
+        cover.src = this.#baseUrl + "/api/cover/song/" + song.id;
+        div.appendChild(cover)
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('song-info');
         div.appendChild(infoDiv);
 
         const title = document.createElement('div')
         title.classList.add('song-title')
-        title.innerText = song.title;
+        title.innerText = song.track ? `${song.track}. ${song.title}` : song.title;
         infoDiv.appendChild(title)
 
         const artist = document.createElement('div')
