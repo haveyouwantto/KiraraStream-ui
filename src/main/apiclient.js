@@ -16,9 +16,13 @@ export default class ApiClient {
     listAlbums() {
         this.#content.innerHTML = '';
         this.#content.scrollTo(0, 0);
+        const albumList = document.createElement('div');
+        albumList.classList.add('album-list')
+        this.#content.appendChild(albumList)
+
         this.getAlbums().then(v => {
             for (let album of v) {
-                this.#content.appendChild(this.populateAlbum(album))
+                albumList.appendChild(this.populateAlbum(album))
             }
         })
     }
@@ -28,6 +32,7 @@ export default class ApiClient {
         div.classList.add('album-container')
         const img = document.createElement('img')
         img.src = this.getCoverUrl(album.cover_hash);
+        img.setAttribute('loading', 'lazy');
         div.appendChild(img)
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('album-info');
@@ -65,12 +70,13 @@ export default class ApiClient {
 
             const backdrop = document.createElement('div')
             backdrop.classList.add('backdrop')
-            backdrop.style.backgroundImage = `url("${this.getCoverUrl(album.cover_hash)}")`
+            backdrop.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.75)), url("${this.getCoverUrl(album.cover_hash)}")`
             this.#content.appendChild(backdrop)
 
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
             cover.src = this.getCoverUrl(album.cover_hash);
+            cover.setAttribute('loading', 'lazy');
             this.#content.append(cover)
 
             const albumInfoDiv = document.createElement('div')
@@ -84,7 +90,7 @@ export default class ApiClient {
 
             const artist = document.createElement('div')
             // artist.classList.add('album-title-large')
-            artist.innerText = v.album_artist;
+            artist.innerText = v.release_year ? `${v.album_artist} · ${v.release_year}` : v.album_artist;
             albumInfoDiv.append(artist)
 
             const contentDiv = document.createElement('div');
@@ -97,8 +103,14 @@ export default class ApiClient {
             }
 
             const back = document.createElement('div')
+
+            // Temp button
             back.innerText = '<';
             back.style.fontSize = '32px';
+            back.style.position = 'fixed';
+            back.style.top = 0;
+            back.style.left = 0;
+            
             back.addEventListener('click', () => {
                 this.listAlbums();
             })

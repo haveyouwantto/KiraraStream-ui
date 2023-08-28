@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "webpack --mode development"
+    "test": "webpack --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [
     "music"

@@ -19,14 +19,14 @@ module.exports = {
         // favicon: 'resources/favicon.ico',
         inject: 'body',
       }),
-      new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: 'resources/assets',
-            to: ''
-          }
-        ]
-      }),
+      // new CopyWebpackPlugin({
+      //   patterns: [
+      //     {
+      //       from: 'resources/assets',
+      //       to: ''
+      //     }
+      //   ]
+      // }),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash:8].css' // The name of the extracted CSS file
       })
