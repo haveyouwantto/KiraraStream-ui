@@ -9,7 +9,46 @@
     <div id="bgCover"></div>
     <div id="content">
     </div>
-    <audio src="" controls id="audio" autoplay></audio>
+    <!-- <audio src="" controls id="audio" autoplay></audio> -->
+
+    <!-- Player control -->
+    <div id="playerBar" class="shadow">
+        <div id="progress" class="slider">
+            <input id="progress-slider" class="slider-slider" type="range" min="0" max="1" step="any">
+            <!-- <div id="player-loading" class="hidden"></div> -->
+            <div id="bufferedtime"></div>
+            <div id="playtime" class="slider-inner"></div>
+        </div>
+        <div id="controls">
+            <button id="controlsLeft" class="bottom-button">
+                <img id="songCover"></img>
+                <div id="songTitle"></div>
+            </button>
+            <div id="controlsMiddle">
+                <button id="prev" class="icon bottom-button round">&#57346;</button>
+                <button id="play" class="icon bottom-button round">&#57344;</button>
+                <button id="next" class="icon bottom-button round">&#57345;</button>
+                <div id="time" class="time">
+                    <div id="timeDisplay">00:00</div>
+                    <div class="seperater" id="playTimeSep">/</div>
+                    <div id="durationDisplay">00:00</div>
+                </div>
+            </div>
+            <div id="controlsRight">
+                <a class="icon round" id="volume-icon">&#57365;</a>
+                <div id="volume" class="slider">
+                    <input id="volume-slider" class="slider-slider" type="range" min="0" max="100">
+                    <div id="volume-inner" class="slider-inner"></div>
+                </div>
+                <!-- <div id="volume" class="slider">
+                    <div id="volume-inner" class="slider-inner"></div>
+                </div> -->
+                <button id="playMode" class="icon round bottom-button controls">&#11122;</button>
+            </div>
+        </div>
+        <audio autoplay id="audio"></audio>
+        <!--<a id="loop" class="icon button shadow colored">&#11119;</a>-->
+    </div>
 </body>
 
 </html>

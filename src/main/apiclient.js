@@ -1,12 +1,94 @@
+import AudioPlayer from "./audio-player";
+import { formatTime } from "./util";
+import * as playerBar from './player-bar'
+import { editSetting, loadSettings, settingChangeListener } from "./settings";
+
 export default class ApiClient {
     #baseUrl;
     #content;
     #bgCover;
+    #player;
 
     constructor(baseUrl) {
         this.#baseUrl = baseUrl;
         this.#content = document.getElementById("content")
         this.#bgCover = document.getElementById('bgCover');
+        this.#player = new AudioPlayer();
+        this.init();
+    }
+
+    init(){
+
+        this.#player.setEventListener('load', url => {
+            playerBar.setDuration(this.#player.duration);
+        });
+
+        this.#player.setEventListener('play', () => {
+            playerBar.setPaused(false);
+        });
+
+        this.#player.setEventListener('pause', () => {
+            playerBar.setPaused(true);
+        });
+
+        this.#player.setEventListener('volumechange', volume => {
+            editSetting('volume', volume);
+        });
+
+        this.#player.setEventListener('timeupdate', time => {
+            playerBar.setDuration(this.#player.duration);
+            playerBar.setProgress(time);
+            playerBar.setBufferLength(this.#player.bufferLength);
+        });
+
+        playerBar.setEventListener('play', () => {
+            this.#player.play();
+        });
+
+        playerBar.setEventListener('pause', () => {
+            this.#player.pause();
+        });
+
+        playerBar.setEventListener('next', () => {
+            this.play(this.playlist.next().name);
+        });
+
+        playerBar.setEventListener('prev', () => {
+            this.play(this.playlist.prev().name);
+        });
+
+        playerBar.setEventListener('volumechange', volume => {
+            this.#player.volume = Math.pow(volume, 2);
+        });
+
+        playerBar.setEventListener('seek', percentage => {
+            this.#player.seekPercentage(percentage);
+        });
+
+        
+        settingChangeListener.setEventListener('settingchange', e => {
+            console.log(e);
+            switch (e.key) {
+                // case "sortFunc":
+                //     filelist.setSortFunc(e.value);
+                //     if (this.initialized) this.list();
+                //     break
+                case "playMode":
+                    // this.setPlayMode(e.value);
+                    playerBar.setPlayModeIcon(e.value);
+                    break;
+                case "volume":
+                    playerBar.setVolume(Math.sqrt(e.value));
+                    break;
+                // case "language":
+                //     if (e.value === 'auto') setLocale(navigator.language);
+                //     else setLocale(e.value);
+                //     break;
+            }
+            // updateSettingsItem(e.key, e.value);
+        });
+
+        loadSettings();
     }
 
     getAlbums() {
@@ -40,11 +122,13 @@ export default class ApiClient {
 
         const title = document.createElement('div')
         title.classList.add('album-title')
+        title.classList.add('album-title-icon')
         title.innerText = album.title ? album.title : "<unknown>";
         infoDiv.appendChild(title)
 
         const artist = document.createElement('div')
         artist.classList.add('album-artist')
+        artist.classList.add('album-artist-icon')
         artist.innerText = album.artist;
         infoDiv.appendChild(artist)
 
@@ -77,20 +161,20 @@ export default class ApiClient {
             cover.classList.add('album-cover')
             cover.src = this.getCoverUrl(album.cover_hash);
             cover.setAttribute('loading', 'lazy');
-            this.#content.append(cover)
+            backdrop.append(cover)
 
             const albumInfoDiv = document.createElement('div')
             albumInfoDiv.classList.add('album-view-info')
-            this.#content.append(albumInfoDiv)
+            backdrop.append(albumInfoDiv)
 
             const title = document.createElement('div')
             title.classList.add('album-title-large')
-            title.innerText = v.album_title;
+            title.innerText = v.title;
             albumInfoDiv.append(title)
 
             const artist = document.createElement('div')
             // artist.classList.add('album-title-large')
-            artist.innerText = v.release_year ? `${v.album_artist} · ${v.release_year}` : v.album_artist;
+            artist.innerText = v.release_year ? `${v.artist} · ${v.release_year}` : v.artist;
             albumInfoDiv.append(artist)
 
             const contentDiv = document.createElement('div');
@@ -110,7 +194,7 @@ export default class ApiClient {
             back.style.position = 'fixed';
             back.style.top = 0;
             back.style.left = 0;
-            
+
             back.addEventListener('click', () => {
                 this.listAlbums();
             })
@@ -139,6 +223,11 @@ export default class ApiClient {
         artist.innerText = song.artist;
         infoDiv.appendChild(artist)
 
+        const duration = document.createElement('div')
+        duration.classList.add('album-artist')
+        duration.innerText = formatTime(song.duration);
+        infoDiv.appendChild(duration)
+
         div.addEventListener('click', () => {
             console.log(song)
             this.playSong(song)
@@ -148,7 +237,34 @@ export default class ApiClient {
     }
 
     playSong(song) {
-        document.getElementById('audio').src = this.#baseUrl + '/api/play/' + song.id;
+        this.#player.load(this.#baseUrl + '/api/play/' + song.id);
+        this.#player.play();
         this.#bgCover.style.backgroundImage = `url("${this.getCoverUrl(song.cover_hash)}")`
+
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                artwork: [
+                    { src: this.getCoverUrl(song.cover_hash), type: 'image/jpeg' }
+                ],
+                title: song.title,
+                artist: song.artist,
+                album: song.album
+            });
+            navigator.mediaSession.setActionHandler('play', () => {
+                this.#player.play();
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                this.#player.pause();
+            });
+            navigator.mediaSession.setActionHandler('stop', () => this.#player.stop());
+            navigator.mediaSession.setActionHandler('seekbackward', () => { this.#player.seek(this.#player.currentTime - 5) });
+            navigator.mediaSession.setActionHandler('seekforward', () => { this.#player.seek(this.#player.currentTime + 5) });
+            navigator.mediaSession.setActionHandler('seekto', action => { this.#player.seek(action.seekTime) });
+            // navigator.mediaSession.setActionHandler('nexttrack', () => this.play(this.playlist.next().name));
+            // navigator.mediaSession.setActionHandler('previoustrack', () => this.play(this.playlist.prev().name));
+        }
+
+
+        playerBar.setSong(song)
     }
 }
