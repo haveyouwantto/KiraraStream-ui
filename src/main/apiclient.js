@@ -189,8 +189,46 @@ export default class ApiClient {
             this.#content.append(contentDiv)
 
 
+            v.songs.sort((song1, song2) => {
+                // Compare by disc number
+                if (song1.disc !== null && song2.disc !== null) {
+                    if (song1.disc !== song2.disc) {
+                        return song1.disc - song2.disc;
+                    }
+                } else if (song1.disc !== null) {
+                    return -1; // Put songs with disc number ahead of those without
+                } else if (song2.disc !== null) {
+                    return 1; // Put songs with disc number ahead of those without
+                }
+                
+                // Compare by track number
+                if (song1.track !== null && song2.track !== null) {
+                    if (song1.track !== song2.track) {
+                        return song1.track - song2.track;
+                    }
+                } else if (song1.track !== null) {
+                    return -1; // Put songs with track number ahead of those without
+                } else if (song2.track !== null) {
+                    return 1; // Put songs with track number ahead of those without
+                }
+                
+                // Compare by title using localCompare for string comparison
+                return song1.title.localeCompare(song2.title);
+            });
+
+            let currentDisc = null;
+
             for (let song of v.songs) {
-                contentDiv.appendChild(this.populateTrack(song))
+                if (song.disc && song.disc !== currentDisc) {
+                    currentDisc = song.disc;
+                    const discTag = document.createElement('div');
+                    discTag.textContent = `Disc ${currentDisc}`;
+                    discTag.classList.add('disc-tag'); // You can style this class with CSS
+                    
+                    contentDiv.appendChild(discTag);
+                }
+                
+                contentDiv.appendChild(this.populateTrack(song));
             }
 
             const back = document.createElement('div')
