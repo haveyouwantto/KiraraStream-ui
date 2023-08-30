@@ -10,6 +10,10 @@
     height: 60px;
 }
 
+.shadow {
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 50%);
+}
+
 #progress {
     width: 100%;
     position: relative;
@@ -193,15 +197,19 @@
 }
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 680px) {
 
     #playTimeSep,
     #durationDisplay {
         display: none;
     }
+
+    #volume {
+        width: 12vw;
+    }
 }
 
-@media only screen and (max-width: 680px) {
+@media only screen and (max-width: 550px) {
 
     #volume,
     #volume-icon {
@@ -214,31 +222,29 @@
     }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 512px) {
     #playMode {
         display: none;
     }
 }
 
-@media only screen and (max-width: 512px) {
+@media only screen and (max-width: 420px) {
     #time {
         display: none;
     }
 }
 
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 380px) {
     #prev {
         display: none;
     }
 }
 
-@media only screen and (max-width: 380px) {
+@media only screen and (max-width: 300px) {
     #next {
         display: none;
     }
-}
 
-@media only screen and (max-width: 300px) {
     input[type=number] {
         min-width: unset;
     }
