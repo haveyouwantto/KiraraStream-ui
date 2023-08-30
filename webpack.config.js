@@ -4,6 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const CssMinifier = require("css-minimizer-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 
 
@@ -16,7 +17,7 @@ module.exports = {
     plugins: [
       new HtmlWebpackPlugin({
         template: 'resources/index.html',
-        // favicon: 'resources/favicon.ico',
+        favicon: 'resources/favicon.ico',
         inject: 'body',
       }),
       // new CopyWebpackPlugin({
@@ -29,7 +30,8 @@ module.exports = {
       // }),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash:8].css' // The name of the extracted CSS file
-      })
+      }),
+      new CleanWebpackPlugin() 
     ],
     optimization: {
       minimize: true,
