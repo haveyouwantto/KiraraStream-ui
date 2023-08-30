@@ -1,13 +1,17 @@
 import AudioPlayer from "./audio-player";
 import { formatTime } from "./util";
 import * as playerBar from './player-bar'
-import { editSetting, loadSettings, settingChangeListener } from "./settings";
+import { editSetting, loadSettings, settingChangeListener, settings } from "./settings";
+import Playlist from "./playlist";
 
 export default class ApiClient {
     #baseUrl;
     #content;
     #bgCover;
     #player;
+
+    #cwd;
+    #playlist;
 
     constructor(baseUrl) {
         this.#baseUrl = baseUrl;
@@ -17,7 +21,8 @@ export default class ApiClient {
         this.init();
     }
 
-    init(){
+    init() {
+        this.#player.volume = settings.volume;
 
         this.#player.setEventListener('load', url => {
             playerBar.setDuration(this.#player.duration);
@@ -50,11 +55,11 @@ export default class ApiClient {
         });
 
         playerBar.setEventListener('next', () => {
-            this.play(this.playlist.next().name);
+            this.playSong(this.#playlist.next());
         });
 
         playerBar.setEventListener('prev', () => {
-            this.play(this.playlist.prev().name);
+            this.playSong(this.#playlist.prev());
         });
 
         playerBar.setEventListener('volumechange', volume => {
@@ -65,7 +70,7 @@ export default class ApiClient {
             this.#player.seekPercentage(percentage);
         });
 
-        
+
         settingChangeListener.setEventListener('settingchange', e => {
             console.log(e);
             switch (e.key) {
@@ -78,6 +83,7 @@ export default class ApiClient {
                     playerBar.setPlayModeIcon(e.value);
                     break;
                 case "volume":
+                    // this.#player.volume = e.value;
                     playerBar.setVolume(Math.sqrt(e.value));
                     break;
                 // case "language":
@@ -106,6 +112,7 @@ export default class ApiClient {
             for (let album of v) {
                 albumList.appendChild(this.populateAlbum(album))
             }
+            location.hash = '';
         })
     }
 
@@ -189,8 +196,8 @@ export default class ApiClient {
             const back = document.createElement('div')
 
             // Temp button
-            back.innerText = '<';
-            back.style.fontSize = '32px';
+            back.innerText = '\ue003';
+            back.classList.add('icon')
             back.style.position = 'fixed';
             back.style.top = 0;
             back.style.left = 0;
@@ -198,7 +205,11 @@ export default class ApiClient {
             back.addEventListener('click', () => {
                 this.listAlbums();
             })
-            contentDiv.appendChild(back)
+            contentDiv.appendChild(back);
+
+            this.#cwd = new Playlist(v.songs)
+
+            location.hash = '!/album/' + album.id;
         })
     }
 
@@ -231,20 +242,22 @@ export default class ApiClient {
         div.addEventListener('click', () => {
             console.log(song)
             this.playSong(song)
+            this.#playlist = this.#cwd;
         })
 
         return div
     }
 
     playSong(song) {
+        const coverUrl = this.getCoverUrl(song.cover_hash);
         this.#player.load(this.#baseUrl + '/api/play/' + song.id);
         this.#player.play();
-        this.#bgCover.style.backgroundImage = `url("${this.getCoverUrl(song.cover_hash)}")`
+        this.#bgCover.style.backgroundImage = `url("${coverUrl}")`
 
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 artwork: [
-                    { src: this.getCoverUrl(song.cover_hash), type: 'image/jpeg' }
+                    { src: coverUrl, type: 'image/jpeg' }
                 ],
                 title: song.title,
                 artist: song.artist,
@@ -260,11 +273,13 @@ export default class ApiClient {
             navigator.mediaSession.setActionHandler('seekbackward', () => { this.#player.seek(this.#player.currentTime - 5) });
             navigator.mediaSession.setActionHandler('seekforward', () => { this.#player.seek(this.#player.currentTime + 5) });
             navigator.mediaSession.setActionHandler('seekto', action => { this.#player.seek(action.seekTime) });
-            // navigator.mediaSession.setActionHandler('nexttrack', () => this.play(this.playlist.next().name));
-            // navigator.mediaSession.setActionHandler('previoustrack', () => this.play(this.playlist.prev().name));
+            navigator.mediaSession.setActionHandler('nexttrack', () => this.playSong(this.#playlist.next()));
+            navigator.mediaSession.setActionHandler('previoustrack', () => this.playSong(this.#playlist.prev()));
         }
 
 
-        playerBar.setSong(song)
+        playerBar.setSongName(song.title)
+        playerBar.setSongArtist(song.artist)
+        playerBar.setSongCover(coverUrl)
     }
 }

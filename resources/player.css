@@ -132,21 +132,20 @@
     justify-content: right;
 }
 
+
 #songCover {
     width: auto;
     height: 100%;
-    border-radius: 4px;
     margin-right: 12px;
 }
 
 #songTitle {
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-overflow: ellipsis;
-    overflow-wrap: anywhere;
-    max-height: 100%;
+    font-size: 14px;
 }
 
+#songArtist {
+    font-size: 12px;
+}
 
 .time {
     display: flex;
@@ -189,6 +188,15 @@
 
 .round {
     border-radius: 100%;
+}
+
+.spinning {
+    animation: spinning 20s linear;
+    animation-iteration-count: infinite;
+}
+
+.animation-paused {
+    animation-play-state: paused;
 }
 
 @font-face {
@@ -255,5 +263,15 @@
 
     .right {
         max-width: 40vw;
+    }
+}
+
+@keyframes spinning {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }

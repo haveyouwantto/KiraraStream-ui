@@ -9,6 +9,7 @@ const bufferedBar = $("#bufferedtime");
 const controlsLeft = $("#controlsLeft");
 const songCover = $("#songCover");
 const songTitle = $("#songTitle");
+const songArtist = $("#songArtist");
 const timeDisplay = $("#timeDisplay");
 const durationDisplay = $("#durationDisplay");
 
@@ -41,8 +42,10 @@ export function setBufferLength(value) {
 export function setPaused(value) {
     if (value) {
         playButton.innerText = '\ue000';
+        songCover.classList.add('animation-paused')
     } else {
         playButton.innerText = '\ue00f';
+        songCover.classList.remove('animation-paused')
     }
     paused = value;
 }
@@ -83,9 +86,16 @@ volumeControlSlider.addEventListener('input', e => {
     playerAdapter.on('volumechange', volumeControlSlider.value / 100);
 })
 
-export function setSong(song) {
-    songTitle.textContent = song.title;
-    songCover.src = "/api/cover/" + song.cover_hash;
+export function setSongName(name) {
+    songTitle.textContent = name;
+}
+
+export function setSongArtist(name) {
+    songArtist.textContent = name;
+}
+
+export function setSongCover(url) {
+    songCover.src = url;
 }
 
 export function setPlayerLoading(value) {

@@ -150,15 +150,14 @@ body {
     justify-content: center;
 }
 
-/* temporary */
-audio {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
+.bottom-song-info{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 100%;
+    text-align: start;
 }
-
-
-
 
 @media screen and (max-width: 650px) {
     .album-cover {
