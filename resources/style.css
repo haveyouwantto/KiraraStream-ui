@@ -1,4 +1,3 @@
-
 body {
     background-color: black;
     color: white;
@@ -154,7 +153,20 @@ body {
     justify-content: center;
 }
 
-.bottom-song-info{
+.song-quality {
+    outline: 1px solid white;
+    width: min-content;
+    height: min-content;
+    font-size: 12px;
+    color: white;
+}
+
+.song-file-info {
+    display: flex;
+    gap: 4px;
+}
+
+.bottom-song-info {
     display: flex;
     align-items: flex-start;
     flex-direction: column;

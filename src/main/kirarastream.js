@@ -45,6 +45,26 @@ export default class KiraraStream {
             playerBar.setProgress(time);
             playerBar.setBufferLength(this.#player.bufferLength);
         });
+        
+        this.#player.setEventListener('ended', () => {
+            switch (settings.playMode) {
+                case 0:
+                    this.#player.pause();
+                    break;
+                case 2:
+                    if (this.#playlist.isLast()) {
+                        this.#player.pause();
+                    } else {
+                        this.playSong(this.#playlist.next());
+                    }
+                    break;
+                case 3:
+                    this.playSong(this.#playlist.next());
+                    break;
+                default:
+                    break;
+            }
+        });
 
         playerBar.setEventListener('play', () => {
             this.#player.play();
@@ -70,6 +90,7 @@ export default class KiraraStream {
             this.#player.seekPercentage(percentage);
         });
 
+        playerBar.setEventListener('playmodechange', mode => editSetting('playMode', mode))
 
         settingChangeListener.setEventListener('settingchange', e => {
             console.log(e);
@@ -79,7 +100,7 @@ export default class KiraraStream {
                 //     if (this.initialized) this.list();
                 //     break
                 case "playMode":
-                    // this.setPlayMode(e.value);
+                    this.setPlayMode(e.value);
                     playerBar.setPlayModeIcon(e.value);
                     break;
                 case "volume":
@@ -140,7 +161,7 @@ export default class KiraraStream {
         infoDiv.appendChild(artist)
 
         div.addEventListener('click', () => {
-            this.listTracks(album)
+            this.listTracks(album.id)
         })
 
         return div
@@ -150,23 +171,23 @@ export default class KiraraStream {
         return this.#baseUrl + "/api/cover/" + id;
     }
 
-    getTracks(album) {
-        return fetch(this.#baseUrl + '/api/songs/' + album.id).then(r => r.json())
+    getTracks(albumid) {
+        return fetch(this.#baseUrl + '/api/songs/' + albumid).then(r => r.json())
     }
 
-    listTracks(album) {
+    listTracks(albumid) {
         this.#content.innerHTML = '';
         this.#content.scrollTo(0, 0);
-        this.getTracks(album).then(v => {
+        this.getTracks(albumid).then(v => {
 
             const backdrop = document.createElement('div')
             backdrop.classList.add('backdrop')
-            backdrop.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.75)), url("${this.getCoverUrl(album.cover_hash)}")`
+            backdrop.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.75)), url("${this.getCoverUrl(v.cover_hash)}")`
             this.#content.appendChild(backdrop)
 
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
-            cover.src = this.getCoverUrl(album.cover_hash);
+            cover.src = this.getCoverUrl(v.cover_hash);
             cover.setAttribute('loading', 'lazy');
             backdrop.append(cover)
 
@@ -200,7 +221,7 @@ export default class KiraraStream {
                 } else if (song2.disc !== null) {
                     return 1; // Put songs with disc number ahead of those without
                 }
-                
+
                 // Compare by track number
                 if (song1.track !== null && song2.track !== null) {
                     if (song1.track !== song2.track) {
@@ -211,7 +232,7 @@ export default class KiraraStream {
                 } else if (song2.track !== null) {
                     return 1; // Put songs with track number ahead of those without
                 }
-                
+
                 // Compare by title using localCompare for string comparison
                 return song1.title.localeCompare(song2.title);
             });
@@ -224,10 +245,10 @@ export default class KiraraStream {
                     const discTag = document.createElement('div');
                     discTag.textContent = `Disc ${currentDisc}`;
                     discTag.classList.add('disc-tag'); // You can style this class with CSS
-                    
+
                     contentDiv.appendChild(discTag);
                 }
-                
+
                 contentDiv.appendChild(this.populateTrack(song));
             }
 
@@ -247,7 +268,7 @@ export default class KiraraStream {
 
             this.#cwd = new Playlist(v.songs)
 
-            location.hash = '!/album/' + album.id;
+            location.hash = '!/album/' + albumid;
         })
     }
 
@@ -272,10 +293,21 @@ export default class KiraraStream {
         artist.innerText = song.artist;
         infoDiv.appendChild(artist)
 
+        const fileInfo = document.createElement('div');
+        fileInfo.classList.add('song-file-info')
+        infoDiv.appendChild(fileInfo)
+
+        if (song.bitrate > 320) {
+            const quality = document.createElement('div')
+            quality.classList.add('song-quality');
+            quality.innerText = song.format;
+            fileInfo.append(quality)
+        }
+
         const duration = document.createElement('div')
         duration.classList.add('album-artist')
         duration.innerText = formatTime(song.duration);
-        infoDiv.appendChild(duration)
+        fileInfo.appendChild(duration)
 
         div.addEventListener('click', () => {
             console.log(song)
@@ -319,5 +351,18 @@ export default class KiraraStream {
         playerBar.setSongName(song.title)
         playerBar.setSongArtist(song.artist)
         playerBar.setSongCover(coverUrl)
+    }
+
+    setPlayMode(mode) {
+        switch (mode) {
+            case 1:
+                this.#player.loop = true;
+                break
+            case 0:
+            case 2:
+            case 3:
+                this.#player.loop = false;
+                break
+        }
     }
 }
