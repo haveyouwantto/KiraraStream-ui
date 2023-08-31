@@ -4,7 +4,7 @@ import * as playerBar from './player-bar'
 import { editSetting, loadSettings, settingChangeListener, settings } from "./settings";
 import Playlist from "./playlist";
 
-export default class ApiClient {
+export default class KiraraStream {
     #baseUrl;
     #content;
     #bgCover;

@@ -32,7 +32,9 @@ body {
     margin-bottom: 60px;
     justify-content: center;
     width: 100%;
+    height: calc(100vh - 60px);
     overflow-x: hidden;
+    align-content: flex-start;
 }
 
 .album-list {
@@ -89,6 +91,7 @@ body {
     z-index: -1;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
 }
 
 .album-cover {
@@ -125,7 +128,7 @@ body {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 4px;
+    padding: 4px 0 4px 0;
     transition: background-color 100ms;
 }
 
@@ -141,6 +144,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    object-fit: cover;
 }
 
 .song-info {
