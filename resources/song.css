@@ -1,7 +1,7 @@
 #song {
     position: fixed;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100dvh - 60px);
     top: 0;
     z-index: 3;
     visibility: hidden;
@@ -38,7 +38,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
-    height: calc(100vh - 60px);
+    height: 100%
 }
 
 .song-view-left,
@@ -123,7 +123,7 @@
     }
 
     .song-view-lyrics {
-        width: 100%;
+        width: 95%;
     }
 
     .lyrics {
