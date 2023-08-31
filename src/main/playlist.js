@@ -1,14 +1,14 @@
 export default class Playlist {
-    #list ;
+    #list;
     #index = 0;
     constructor(songs) {
         this.#list = songs;
     }
 
-    setPlaying(name) {
+    setPlaying(song) {
         for (let i = 0; i < this.#list.length; i++) {
             const element = this.#list[i];
-            if (element.name == name) {
+            if (element == song) {
                 this.#index = i;
                 return i;
             }
@@ -41,7 +41,7 @@ export default class Playlist {
         return this.#list[this.#index];
     }
 
-    get list(){
+    get list() {
         return this.#list;
     }
 }

@@ -1,5 +1,6 @@
 import "../resources/style.css"
 import "../resources/player.css"
+import "../resources/song.css"
 import KiraraStream from "./main/kirarastream";
 import urlparse from "./main/urlparse";
 

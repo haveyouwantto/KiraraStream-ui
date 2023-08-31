@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div id="bgCover"></div>
+    <div id="bgCover" class="bg-cover"></div>
     <div id="content">
     </div>
     <!-- <audio src="" controls id="audio" autoplay></audio> -->
@@ -54,8 +54,20 @@
         <!--<a id="loop" class="icon button shadow colored">&#11119;</a>-->
     </div>
 
-    <div id="song" class="hidden">
-
+    <div id="song" class="">
+        <div id="songBgCover" class="song-bg-cover"></div>
+        <!-- <div class="icon back-btn" id="songBack">V</div> -->
+        <div class="song-view-container">
+            <div class="song-view-left">
+                <img class="song-view-cover">
+                <div class="song-view-title"></div>
+                <div class="song-view-artist"></div>
+                <div class="song-view-format"></div>
+            </div>
+            <div class="song-view-right">
+                <div class="song-view-lyrics"></div>
+            </div>
+        </div>
     </div>
 </body>
 

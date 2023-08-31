@@ -1,6 +1,7 @@
 import AudioPlayer from "./audio-player";
-import { formatTime } from "./util";
+import { $, formatTime } from "./util";
 import * as playerBar from './player-bar'
+import * as songView from './song-view'
 import { editSetting, loadSettings, settingChangeListener, settings } from "./settings";
 import Playlist from "./playlist";
 
@@ -44,8 +45,9 @@ export default class KiraraStream {
             playerBar.setDuration(this.#player.duration);
             playerBar.setProgress(time);
             playerBar.setBufferLength(this.#player.bufferLength);
+            songView.updateLyrics(time)
         });
-        
+
         this.#player.setEventListener('ended', () => {
             switch (settings.playMode) {
                 case 0:
@@ -91,6 +93,10 @@ export default class KiraraStream {
         });
 
         playerBar.setEventListener('playmodechange', mode => editSetting('playMode', mode))
+
+        playerBar.setEventListener('titleclick', () => {
+            this.toggleSongView();
+        })
 
         settingChangeListener.setEventListener('settingchange', e => {
             console.log(e);
@@ -313,6 +319,7 @@ export default class KiraraStream {
             console.log(song)
             this.playSong(song)
             this.#playlist = this.#cwd;
+            this.#playlist.setPlaying(song)
         })
 
         return div
@@ -322,7 +329,7 @@ export default class KiraraStream {
         const coverUrl = this.getCoverUrl(song.cover_hash);
         this.#player.load(this.#baseUrl + '/api/play/' + song.id);
         this.#player.play();
-        this.#bgCover.style.backgroundImage = `url("${coverUrl}")`
+        $('body').style.backgroundImage = `url("${coverUrl}")`
 
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
@@ -351,6 +358,18 @@ export default class KiraraStream {
         playerBar.setSongName(song.title)
         playerBar.setSongArtist(song.artist)
         playerBar.setSongCover(coverUrl)
+        songView.setCover(coverUrl)
+        songView.setSongInfo(song)
+        if (song.has_lyrics) {
+            fetch(this.#baseUrl + '/api/lyrics/' + song.id).then(r => {
+                if (r.ok) return r.json()
+            }).then(lyrics => {
+                songView.setLyrics(lyrics)
+            })
+        }
+        else {
+            songView.setLyrics()
+        }
     }
 
     setPlayMode(mode) {
@@ -364,5 +383,10 @@ export default class KiraraStream {
                 this.#player.loop = false;
                 break
         }
+    }
+
+    toggleSongView() {
+        // songView.setBgCover(this.getCoverUrl(this.#playlist.c))
+        songView.setSongViewVisible(!songView.isSongViewVisible())
     }
 }

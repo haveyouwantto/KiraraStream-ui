@@ -1,7 +1,132 @@
 #song {
     position: fixed;
     width: 100%;
+    height: calc(100% - 60px);
     top: 0;
     z-index: 3;
-    height:100%;
+    visibility: hidden;
+    animation-fill-mode: forwards;
+
+    background-image: url('assets/default.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: repeat;
+    background-position: center;
+}
+
+.song-bg-cover {
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    backdrop-filter: blur(2rem) brightness(50%);
+    transition: background-image 1.5s;
+    position: absolute;
+}
+
+.song-view-open {
+    animation: slideIn 500ms ease-in-out;
+}
+
+.song-view-close {
+    animation: slideIn 500ms ease-in-out;
+    animation-direction: reverse;
+}
+
+.back-btn {}
+
+.song-view-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    height: calc(100vh - 60px);
+}
+
+.song-view-left,
+.song-view-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.song-view-cover {
+    width: 50vh;
+    height: auto;
+    border-radius: 4px;
+}
+
+.song-view-title {
+    margin-top: 10px;
+    font-size: 26px;
+}
+
+.song-view-artist {
+    margin-top: 6px;
+    color: #ffffffa0;
+}
+
+.song-view-format {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.song-view-lyrics {
+    max-height: 60vh;
+    overflow-y: auto;
+    width: 75%;
+    padding-right: 8px;
+}
+
+.song-view-lyrics::-webkit-scrollbar {
+    background-color: #ffffff20;
+    width: 6px;
+}
+
+.song-view-lyrics::-webkit-scrollbar-thumb {
+    background-color: white;
+}
+
+.lyrics {
+    font-size: 24px;
+    color: #ffffffa0;
+    font-weight: 300;
+    font-size: 1.5rem;
+    transition: color 0.3s ease-in-out;
+    transition-property: color, font-weight;
+}
+
+.lyrics-highlight {
+    color: white;
+    font-weight: 600;
+}
+
+@keyframes slideIn {
+    from {
+        visibility: hidden;
+        transform: translateY(100%);
+    }
+
+    to {
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .song-view-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .song-view-left {
+        display: none;
+    }
+
+    .song-view-lyrics {
+        width: 100%;
+    }
+
+    .lyrics {
+        font-size: 1.25rem;
+    }
 }
