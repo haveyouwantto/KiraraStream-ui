@@ -7,7 +7,7 @@
     visibility: hidden;
     animation-fill-mode: forwards;
 
-    background-image: url('assets/default.png');
+    background-image: url('default.png');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: repeat;

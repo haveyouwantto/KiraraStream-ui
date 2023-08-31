@@ -5,7 +5,7 @@ body {
     margin: 0;
 
     
-    background-image: url('assets/default.png');
+    background-image: url('default.png');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: repeat;

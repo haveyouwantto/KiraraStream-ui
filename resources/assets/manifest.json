@@ -1,0 +1,13 @@
+{
+    "short_name": "KiraraStream",
+    "name": "KiraraStream",
+    "description": "Experience the enchantment of music with KiraraStream, where elegance meets radiance. Dive into a world of glassy aesthetics and lightweight design as you stream your favorite melodies. Our charming interface, adorned with adorable elements, brings a touch of anime-inspired whimsy to your music journey. Immerse yourself in a streaming experience that's as delightful as it is melodious.",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "256x256"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone"
+}
