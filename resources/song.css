@@ -12,6 +12,9 @@
     background-attachment: fixed;
     background-repeat: repeat;
     background-position: center;
+    
+    display: flex;
+    justify-content: center;
 }
 
 .song-bg-cover {
@@ -37,7 +40,7 @@
 .song-view-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-
+    width: 95%;
     height: 100%
 }
 
@@ -60,6 +63,7 @@
     margin-top: 10px;
     font-size: 26px;
     font-weight: 300;
+    overflow-wrap: anywhere;
 }
 
 .song-view-artist {
@@ -67,6 +71,14 @@
     color: #ffffffa0;
     font-weight: 300;
 }
+
+.song-view-album {
+    margin-top: 5px;
+    color: #ffffffa0;
+    font-weight: 300;
+    overflow-wrap: anywhere;
+}
+
 
 .song-view-format {
     font-size: 12px;
@@ -76,7 +88,7 @@
 .song-view-lyrics {
     max-height: 60dvh;
     overflow-y: auto;
-    width: 75%;
+    width: 100%;
     padding-right: 8px;
 }
 
@@ -118,10 +130,6 @@
 @media screen and (max-width: 768px) {
     .song-view-container {
         grid-template-columns: repeat(1, 1fr);
-    }
-
-    .song-view-lyrics {
-        width: 95%;
     }
 
     .narrow-hidden {

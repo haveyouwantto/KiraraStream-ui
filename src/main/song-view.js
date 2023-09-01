@@ -10,6 +10,7 @@ const songBgCover = $("#songBgCover");
 const songViewCover = left.querySelector('.song-view-cover');
 const songViewTitle = left.querySelector('.song-view-title');
 const songViewArtist = left.querySelector('.song-view-artist');
+const songViewAlbum = left.querySelector('.song-view-album');
 const songViewFormat = left.querySelector('.song-view-format');
 
 const songViewLyrics = right.querySelector('.song-view-lyrics');
@@ -48,6 +49,7 @@ export function setCover(url) {
 export function setSongInfo(song) {
     songViewTitle.innerText = song.title;
     songViewArtist.innerText = song.artist;
+    songViewAlbum.innerText = song.album;
     songViewFormat.innerText = generateSongInfo(song)
 }
 

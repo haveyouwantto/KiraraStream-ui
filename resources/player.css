@@ -142,6 +142,7 @@
 
 #songTitle {
     font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
 #songArtist {
