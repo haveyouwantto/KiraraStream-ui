@@ -51,7 +51,7 @@
 }
 
 .song-view-cover {
-    width: 50dvh;
+    width: 40dvh;
     height: auto;
     border-radius: 4px;
 }
@@ -93,7 +93,7 @@
     font-size: 24px;
     color: #ffffffa0;
     font-weight: 300;
-    font-size: calc(1rem + 0.6vw);
+    font-size: calc(16px + 0.6vw);
     transition: color 0.3s ease-in-out;
     transition-property: color, font-weight;
 }
@@ -120,12 +120,12 @@
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .song-view-left {
-        display: none;
-    }
-
     .song-view-lyrics {
         width: 95%;
+    }
+
+    .narrow-hidden {
+        display: none;
     }
 
     /* .lyrics {

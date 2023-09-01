@@ -110,6 +110,16 @@ export function updateLyrics(time) {
     lrc.update(time)
 }
 
+right.addEventListener('click',e=>{
+    right.classList.add('narrow-hidden')
+    left.classList.remove('narrow-hidden')
+})
+
+left.addEventListener('click',e=>{
+    right.classList.remove('narrow-hidden')
+    left.classList.add('narrow-hidden')
+})
+
 // songBack.addEventListener('click', () => {
 //     setSongViewVisible(false)
 // })
