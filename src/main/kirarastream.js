@@ -370,6 +370,9 @@ export default class KiraraStream {
         else {
             songView.setLyrics()
         }
+
+        var link = document.querySelector("link[rel~='icon']");
+        link.href = coverUrl;
     }
 
     setPlayMode(mode) {

@@ -11,6 +11,8 @@ body {
     background-repeat: repeat;
     background-position: center;
     transition: background-image 1.5s;
+
+    height: 100vh;
 }
 
 *::selection {

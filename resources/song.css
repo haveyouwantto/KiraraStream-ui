@@ -51,7 +51,7 @@
 }
 
 .song-view-cover {
-    width: 50vh;
+    width: 50dvh;
     height: auto;
     border-radius: 4px;
 }
@@ -59,11 +59,13 @@
 .song-view-title {
     margin-top: 10px;
     font-size: 26px;
+    font-weight: 300;
 }
 
 .song-view-artist {
-    margin-top: 6px;
+    margin-top: 5px;
     color: #ffffffa0;
+    font-weight: 300;
 }
 
 .song-view-format {
@@ -72,7 +74,7 @@
 }
 
 .song-view-lyrics {
-    max-height: 60vh;
+    max-height: 60dvh;
     overflow-y: auto;
     width: 75%;
     padding-right: 8px;
@@ -91,7 +93,7 @@
     font-size: 24px;
     color: #ffffffa0;
     font-weight: 300;
-    font-size: 1.5rem;
+    font-size: calc(1rem + 0.6vw);
     transition: color 0.3s ease-in-out;
     transition-property: color, font-weight;
 }
@@ -126,7 +128,7 @@
         width: 95%;
     }
 
-    .lyrics {
+    /* .lyrics {
         font-size: 1.25rem;
-    }
+    } */
 }
