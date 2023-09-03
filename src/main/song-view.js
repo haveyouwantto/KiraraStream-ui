@@ -1,3 +1,4 @@
+import EventListener from "./event-listener";
 import LrcSync from "./lrcsync";
 import { $, generateSongInfo } from "./util";
 
@@ -16,6 +17,8 @@ const songViewFormat = left.querySelector('.song-view-format');
 const songViewLyrics = right.querySelector('.song-view-lyrics');
 
 const lrc = new LrcSync();
+
+const evl = new EventListener();
 
 lrc.onlyrics = lyrics => {
     document.querySelectorAll('.lyrics-highlight').forEach(e => {
@@ -53,6 +56,11 @@ export function setSongInfo(song) {
     songViewFormat.innerText = generateSongInfo(song)
 }
 
+function lyricsClicked(e) {
+    evl.on('lyricsclick', parseFloat(e.target.getAttribute('time')))
+    e.stopPropagation();
+}
+
 export function setLyrics(lyrics) {
     songViewLyrics.innerHTML = '';
     if (lyrics) {
@@ -64,11 +72,13 @@ export function setLyrics(lyrics) {
             const lineDiv = document.createElement('span')
             lineDiv.classList.add('lyrics')
             lineDiv.id = 'lyrics-' + ord;
+            lineDiv.setAttribute('time', line.time);
             lineDiv.innerText = line.text;
+            lineDiv.addEventListener('click', lyricsClicked);
             songViewLyrics.append(lineDiv)
             line.ord = ord++;
 
-            if(line.text.endsWith('\n')) songViewLyrics.append(document.createElement('br'))
+            if (line.text.endsWith('\n')) songViewLyrics.append(document.createElement('br'))
         }
         lrc.load(cleaned);
     } else {
@@ -112,15 +122,17 @@ export function updateLyrics(time) {
     lrc.update(time)
 }
 
-right.addEventListener('click',e=>{
+right.addEventListener('click', e => {
     right.classList.add('narrow-hidden')
     left.classList.remove('narrow-hidden')
 })
 
-left.addEventListener('click',e=>{
+left.addEventListener('click', e => {
     right.classList.remove('narrow-hidden')
     left.classList.add('narrow-hidden')
 })
+
+export { evl };
 
 // songBack.addEventListener('click', () => {
 //     setSongViewVisible(false)

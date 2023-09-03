@@ -121,6 +121,10 @@ export default class KiraraStream {
             // updateSettingsItem(e.key, e.value);
         });
 
+        songView.evl.setEventListener('lyricsclick',time=>{
+            this.#player.seek(time);
+        })
+
         loadSettings();
     }
 
