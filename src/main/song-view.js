@@ -34,14 +34,15 @@ lrc.onlyrics = lyrics => {
 
 export function setSongViewVisible(v) {
     if (v) {
-        song.classList.add('song-view-open')
+        song.classList.add('animation-open')
     } else {
-        song.classList.remove('song-view-open')
+        song.classList.add('animation-close')
+        song.classList.remove('animation-open')
     }
 }
 
 export function isSongViewVisible() {
-    return song.classList.contains('song-view-open')
+    return song.classList.contains('animation-open')
 }
 
 export function setCover(url) {
@@ -58,7 +59,7 @@ export function setSongInfo(song) {
 
 function lyricsClicked(e) {
     evl.on('lyricsclick', parseFloat(e.target.getAttribute('time')))
-    e.stopPropagation();
+    e.stopPropagation()
 }
 
 export function setLyrics(lyrics) {

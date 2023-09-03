@@ -26,13 +26,13 @@
     position: absolute;
 }
 
-.song-view-open {
-    animation: slideIn 500ms ease-in-out;
+#song.animation-open {
+    visibility: visible;
+    animation: slideIn 400ms ease-in-out;
 }
 
-.song-view-close {
-    animation: slideIn 500ms ease-in-out;
-    animation-direction: reverse;
+#song.animation-close {
+    animation: slideOut 300ms ease-in-out;
 }
 
 .back-btn {}
@@ -112,7 +112,7 @@
 
 .lyrics-highlight {
     color: white;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 @keyframes slideIn {
@@ -124,6 +124,18 @@
     to {
         visibility: visible;
         transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+
+    from {
+        visibility: visible;
+        transform: translateY(0);
+    }
+    to {
+        visibility: hidden;
+        transform: translateY(100%);
     }
 }
 

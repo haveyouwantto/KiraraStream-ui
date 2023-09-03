@@ -4,6 +4,7 @@ import * as playerBar from './player-bar'
 import * as songView from './song-view'
 import { editSetting, loadSettings, settingChangeListener, settings } from "./settings";
 import Playlist from "./playlist";
+import animate from "./animation";
 
 export default class KiraraStream {
     #baseUrl;
@@ -20,6 +21,7 @@ export default class KiraraStream {
         this.#bgCover = document.getElementById('bgCover');
         this.#player = new AudioPlayer();
         this.init();
+        animate()
     }
 
     init() {
