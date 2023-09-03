@@ -54,6 +54,9 @@ export function setSongInfo(song) {
     songViewTitle.innerText = song.title;
     songViewArtist.innerText = song.artist;
     songViewAlbum.innerText = song.album;
+    songViewAlbum.addEventListener('click',()=>{
+        evl.on('albumclick', song.album_id)
+    })
     songViewFormat.innerText = generateSongInfo(song)
 }
 

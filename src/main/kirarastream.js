@@ -127,6 +127,11 @@ export default class KiraraStream {
             this.#player.seek(time);
         })
 
+        songView.evl.setEventListener('albumclick',albumid=>{
+            this.listTracks(albumid)
+            songView.setSongViewVisible(false)
+        })
+
         loadSettings();
     }
 
