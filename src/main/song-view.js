@@ -54,9 +54,7 @@ export function setSongInfo(song) {
     songViewTitle.innerText = song.title;
     songViewArtist.innerText = song.artist;
     songViewAlbum.innerText = song.album;
-    songViewAlbum.addEventListener('click',()=>{
-        evl.on('albumclick', song.album_id)
-    })
+    songViewAlbum.setAttribute('albumid', song.album_id)
     songViewFormat.innerText = generateSongInfo(song)
 }
 
@@ -137,6 +135,12 @@ left.addEventListener('click', e => {
 })
 
 export { evl };
+
+
+songViewAlbum.addEventListener('click', e => {
+    evl.on('albumclick', songViewAlbum.getAttribute('albumid'))
+    e.stopPropagation();
+})
 
 // songBack.addEventListener('click', () => {
 //     setSongViewVisible(false)
