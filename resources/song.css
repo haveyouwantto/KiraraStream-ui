@@ -86,10 +86,11 @@
 }
 
 .song-view-lyrics {
-    max-height: 60dvh;
+    max-height: 70dvh;
     overflow-y: auto;
     width: 100%;
     padding-right: 8px;
+    mask: linear-gradient(transparent 70%, black 70%, transparent 100%), linear-gradient(transparent 0%, black 30%, black 70%, transparent 70%);
 }
 
 .song-view-lyrics::-webkit-scrollbar {
