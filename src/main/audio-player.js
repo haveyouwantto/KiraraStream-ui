@@ -67,7 +67,7 @@ export default class AudioPlayer {
                 for (let i = 0; j < dataArray.length; i++) {
                     j = parseInt(i * step);
                     const element = dataArray[j];
-                    let height = element / 255 * this.canvas.height;
+                    let height = Math.max(element / 255 * this.canvas.height, width * 0.25);
                     this.canvasContext.fillRect(i * width, this.canvas.height - height, width * 0.75, height);
                 }
                 requestAnimationFrame(updateVisualizer)
