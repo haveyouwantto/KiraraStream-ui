@@ -5,6 +5,7 @@ import * as songView from './song-view'
 import { editSetting, loadSettings, settingChangeListener, settings } from "./settings";
 import Playlist from "./playlist";
 import animate from "./animation";
+import { getDominantColorsFromURL } from "./color-extractor";
 
 export default class KiraraStream {
     #baseUrl;
@@ -43,11 +44,24 @@ export default class KiraraStream {
             editSetting('volume', volume);
         });
 
-        this.#player.setEventListener('timeupdate', time => {
+        let updatePlayer = () => {
             playerBar.setDuration(this.#player.duration);
-            playerBar.setProgress(time);
+            playerBar.setProgress(this.#player.currentTime);
             playerBar.setBufferLength(this.#player.bufferLength);
-            songView.updateLyrics(time)
+            songView.updateLyrics(this.#player.currentTime)
+            // requestAnimationFrame(updatePlayer)
+        }
+
+        setInterval(updatePlayer, 50)
+
+        // requestAnimationFrame(updatePlayer)
+
+        this.#player.setEventListener('timeupdate', time => {
+            // updatePlayer()
+            // playerBar.setDuration(this.#player.duration);
+            // playerBar.setProgress(time);
+            // playerBar.setBufferLength(this.#player.bufferLength);
+            // songView.updateLyrics(time)
         });
 
         this.#player.setEventListener('ended', () => {
@@ -123,11 +137,11 @@ export default class KiraraStream {
             // updateSettingsItem(e.key, e.value);
         });
 
-        songView.evl.setEventListener('lyricsclick',time=>{
+        songView.evl.setEventListener('lyricsclick', time => {
             this.#player.seek(time);
         })
 
-        songView.evl.setEventListener('albumclick',albumid=>{
+        songView.evl.setEventListener('albumclick', albumid => {
             this.listTracks(albumid)
             songView.setSongViewVisible(false)
         })
@@ -384,6 +398,11 @@ export default class KiraraStream {
 
         var link = document.querySelector("link[rel~='icon']");
         link.href = coverUrl;
+
+        // getDominantColorsFromURL(coverUrl, 10).then(result => {
+        //     console.log(result)
+        //     document.documentElement.style.setProperty('--theme-color', result[0])
+        // })
     }
 
     setPlayMode(mode) {

@@ -9,6 +9,26 @@ export default class AudioPlayer {
         this.listener = new EventListener();
         this.#audio = document.getElementById('audio')
 
+        this.ctx = new AudioContext({ sampleRate: 16000 });
+        this.visualizer = this.ctx.createAnalyser();
+        this.audioNode = this.ctx.createMediaElementSource(this.#audio);
+        this.audioNode.connect(this.visualizer).connect(this.ctx.destination);
+
+        this.canvas = document.getElementById('audioVisualizer');
+        this.canvasContext = this.canvas.getContext('2d');
+
+        new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const target = entry.target;
+                console.log(`Element size changed: ${target.offsetWidth} x ${target.offsetHeight}`);
+
+                const dpr = window.devicePixelRatio;
+                let { width: cssWidth, height: cssHeight } = this.canvas.getBoundingClientRect();
+                this.canvas.width = dpr * cssWidth;
+                this.canvas.height = dpr * cssHeight;
+            }
+        }).observe(this.canvas);
+
 
         if (!audioInit) {
             this.#audio.addEventListener('pause', e => {
@@ -33,6 +53,27 @@ export default class AudioPlayer {
                 }
             })
 
+            let updateVisualizer = () => {
+                let dataArray = new Uint8Array(this.visualizer.frequencyBinCount);
+                this.visualizer.getByteFrequencyData(dataArray);
+                this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height)
+                this.canvasContext.fillStyle = 'white';
+
+                let bars = 50;
+                let step = dataArray.length / bars;
+                let width = this.canvas.width / bars;
+
+                let j = 0;
+                for (let i = 0; j < dataArray.length; i++) {
+                    j = parseInt(i * step);
+                    const element = dataArray[j];
+                    let height = element / 255 * this.canvas.height;
+                    this.canvasContext.fillRect(i * width, this.canvas.height - height, width * 0.75, height);
+                }
+                requestAnimationFrame(updateVisualizer)
+            }
+            requestAnimationFrame(updateVisualizer)
+
             audioInit = true;
         }
     }
@@ -48,6 +89,7 @@ export default class AudioPlayer {
     play() {
         this.#audio.play();
         this.listener.on('play', this.currentTime);
+        this.ctx.resume()
     }
 
     pause() {
