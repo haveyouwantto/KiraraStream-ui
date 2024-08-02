@@ -218,6 +218,7 @@ export default class KiraraStream {
 
             const cover = document.createElement('img')
             cover.classList.add('album-cover')
+            cover.classList.add('shadow')
             cover.src = this.getCoverUrl(v.cover_hash);
             cover.setAttribute('loading', 'lazy');
             backdrop.append(cover)
