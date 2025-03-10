@@ -174,6 +174,7 @@ export default class KiraraStream {
         const img = document.createElement('img')
         img.src = this.getCoverUrl(album.cover_hash);
         img.setAttribute('loading', 'lazy');
+        img.classList.add('shadow')
         div.appendChild(img)
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('album-info');
