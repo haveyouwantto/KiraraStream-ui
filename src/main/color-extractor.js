@@ -92,7 +92,7 @@ function getDominantColorsFromURL(imageURL, colorCount = 5) {
                     // 转换为适合文字的颜色
                     .map(c => {
                         // 调整亮度和饱和度
-                        const optimalL = c.l > 0.6 ? 0.9 : 0.1; // 高亮背景用深色，反之亦然
+                        const optimalL = 0.9;
                         const adjustedS = Math.max(c.s * 1.2, 0.8);
                         
                         // HSL转RGB
