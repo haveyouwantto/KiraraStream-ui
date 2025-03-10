@@ -21,7 +21,7 @@
 
 #bufferedtime {
     width: 0;
-    background-color: #ffffff60;
+    background-color: color-mix(in srgb, var(--theme-color) 37.5%, transparent);
     height: 100%;
     position: absolute;
     transition: width 0.2s;
@@ -44,7 +44,7 @@
     /* Override default look */
     appearance: none;
     height: 24px;
-    background-color: white;
+    background-color: var(--theme-color);
     width: 0;
 }
 
@@ -53,18 +53,18 @@
     visibility: hidden;
     appearance: none;
     height: 24px;
-    background-color: white;
+    background-color: var(--theme-color);
     width: 0;
 }
 
 .slider input[type="range"]:focus-visible {
-    border: 2px solid white;
+    border: 2px solid var(--theme-color);
 }
 
 .slider {
     height: 8px;
     cursor: pointer;
-    background-color: #ffffff20;
+    background-color: color-mix(in srgb, var(--theme-color) 12.5%, transparent);
     display: inline-flex;
     position: relative;
 }
@@ -77,7 +77,7 @@
 
 .slider-inner {
     width: 0;
-    background-color: white;
+    background-color: var(--theme-color);
 
     position: absolute;
     height: 8px;
@@ -92,7 +92,7 @@
 
 .player-loading {
     position: absolute;
-    background-color: #ffffff80;
+    background-color: color-mix(in srgb, var(--theme-color) 50%, transparent);
     height: 100%;
     pointer-events: none;
     animation: linear-progress 2s ease-in-out infinite;
@@ -186,7 +186,7 @@
 }
 
 .bottom-button:hover {
-    background-color: #ffffff40;
+    background-color: color-mix(in srgb, var(--theme-color) 25%, transparent);
 }
 
 .round {

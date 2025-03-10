@@ -57,7 +57,7 @@ export default class AudioPlayer {
                 let dataArray = new Uint8Array(this.visualizer.frequencyBinCount);
                 this.visualizer.getByteFrequencyData(dataArray);
                 this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height)
-                this.canvasContext.fillStyle = 'white';
+                this.canvasContext.fillStyle = document.documentElement.style.getPropertyValue('--theme-color');
 
                 let bars = 50;
                 let step = dataArray.length / bars;

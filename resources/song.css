@@ -79,13 +79,13 @@
 
 .song-view-artist {
     margin-top: 5px;
-    color: #ffffffa0;
+    color: color-mix(in srgb, var(--theme-color) 62.5%, transparent);
     font-weight: 300;
 }
 
 .song-view-album {
     margin-top: 5px;
-    color: #ffffffa0;
+    color: color-mix(in srgb, var(--theme-color) 62.5%, transparent);
     font-weight: 300;
     overflow-wrap: anywhere;
 }
@@ -107,17 +107,17 @@
 }
 
 .song-view-lyrics::-webkit-scrollbar {
-    background-color: #ffffff20;
+    background-color: color-mix(in srgb, var(--theme-color) 12.5%, transparent);
     width: 6px;
 }
 
 .song-view-lyrics::-webkit-scrollbar-thumb {
-    background-color: white;
+    background-color: var(--theme-color);
 }
 
 .lyrics {
     font-size: 24px;
-    color: #ffffff60;
+    color: color-mix(in srgb, var(--theme-color) 37.5%, transparent);
     font-weight: 300;
     font-size: calc(14px + 0.6vw);
     transition: color 0.3s ease-in-out;

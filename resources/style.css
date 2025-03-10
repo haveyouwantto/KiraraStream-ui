@@ -1,6 +1,6 @@
 body {
     background-color: black;
-    color: white;
+    color: var(--theme-color);
     font-family: "Roboto", sans-serif;
     margin: 0;
 
@@ -73,7 +73,7 @@ body {
 }
 
 .album-artist {
-    color: rgba(255, 255, 255, 0.5);
+    color: color-mix(in srgb, var(--theme-color) 50%, transparent);
     font-size: 14px;
 }
 
@@ -110,6 +110,7 @@ body {
     position: absolute;
     left: 36vh;
     top: 5vh;
+    text-shadow: 2px 2px 6px black;
 }
 
 .album-title-large {
@@ -157,11 +158,11 @@ body {
 }
 
 .song-quality {
-    outline: 1px solid white;
+    outline: 1px solid var(--theme-color);
     width: min-content;
     height: min-content;
     font-size: 12px;
-    color: white;
+    color: var(--theme-color);
 }
 
 .song-file-info {
@@ -183,7 +184,7 @@ body {
     padding-bottom: 12px;
     padding-top: 12px;
     text-align: center;
-    background-color: #ffffff20;
+    background-color: color-mix(in srgb, var(--theme-color) 12.5%, transparent);
 }
 
 .hidden {

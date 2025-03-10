@@ -401,10 +401,10 @@ export default class KiraraStream {
         var link = document.querySelector("link[rel~='icon']");
         link.href = coverUrl;
 
-        // getDominantColorsFromURL(coverUrl, 10).then(result => {
-        //     console.log(result)
-        //     document.documentElement.style.setProperty('--theme-color', result[0])
-        // })
+        getDominantColorsFromURL(coverUrl, 10).then(result => {
+            console.log(result)
+            document.documentElement.style.setProperty('--theme-color', result[0] ?? "white")
+        })
     }
 
     setPlayMode(mode) {
